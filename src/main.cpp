@@ -1,4 +1,4 @@
-#include <Diagnostics.h>
+#include <Profiler.h>
 #include <chrono>
 #include <thread>
 #include <string>
@@ -7,7 +7,7 @@
 using namespace std;
 using namespace RTT;
 
-Diagnostics diag;
+Profiler diag;
 
 void testDelay(int time_ms, string tag);
 

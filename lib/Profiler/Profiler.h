@@ -1,5 +1,5 @@
-#ifndef __DIAGNOSTICS_H__
-#define __DIAGNOSTICS_H__
+#ifndef __Profiler_H__
+#define __Profiler_H__
 
 #include <iostream>
 #include <string>
@@ -11,7 +11,7 @@
 #include <math.h>
 
 // #include <QLoggingCategory>
-// Q_DECLARE_LOGGING_CATEGORY(DiagnosticsCategory)
+// Q_DECLARE_LOGGING_CATEGORY(ProfilerCategory)
 
 
 namespace RTT 
@@ -30,14 +30,14 @@ struct Stamp
     std::string toCsv();
 };
 
-class Diagnostics;
-class DiagnosticsHandler;
+class Profiler;
+class ProfilerHandler;
 
-class Diagnostics 
+class Profiler 
 {
 public:
-    Diagnostics();
-    ~Diagnostics();
+    Profiler();
+    ~Profiler();
     // Get start stamp
     void start(std::string name = __PRETTY_FUNCTION__);
     // Get end stamp, calculate duration, check buffer overflow
@@ -62,31 +62,31 @@ private:
     std::chrono::high_resolution_clock::time_point stopTime;
     std::chrono::high_resolution_clock::time_point launchTime;
     std::queue<Stamp> buffer;
-    static DiagnosticsHandler handler;
+    static ProfilerHandler handler;
 };
 
-class DiagnosticsHandler
+class ProfilerHandler
 {
 public:
-    DiagnosticsHandler(unsigned int bufferLimit = 1000);
+    ProfilerHandler(unsigned int bufferLimit = 1000);
     // Set the output file
     void setFile(std::string filename);
     // Get file
     std::string fileName();
-    // Connect to a Diagnostics object
-    void connect(Diagnostics* member);
-    // Disconnect from a Diagnostics object
-    void disconnect(Diagnostics* member);
+    // Connect to a Profiler object
+    void connect(Profiler* member);
+    // Disconnect from a Profiler object
+    void disconnect(Profiler* member);
     // Save buffers to file and dump buffers
     void save();
     // Check buffer size and save if necessary
     void check();
 private:
     unsigned int limit;
-    std::list<Diagnostics*> members;
+    std::list<Profiler*> members;
     std::string logFile = "";
 };
 
 }
 
-#endif // __DIAGNOSTICS_H__
+#endif // __Profiler_H__

@@ -1,9 +1,9 @@
-#include "Diagnostics.h"
+#include "Profiler.h"
 #include <fstream>
 #include <stdio.h>
 #include <logging.h>
-// Q_LOGGING_CATEGORY(DiagnosticsCategory, "[Diagnostics]")
-// #define CATEGORY DiagnosticsCategory
+// Q_LOGGING_CATEGORY(ProfilerCategory, "[Profiler]")
+// #define CATEGORY ProfilerCategory
 // #include "../inc/logging.h"
 
 using namespace RTT;
@@ -37,22 +37,22 @@ string Stamp::toCsv()
     // return "";
 }
 
-DiagnosticsHandler Diagnostics::handler((5));
+ProfilerHandler Profiler::handler((5));
 
-Diagnostics::Diagnostics()
+Profiler::Profiler()
 {
     INFO("")
     launchTime = high_resolution_clock::now();
     // handler.connect(this);
 }
 
-Diagnostics::~Diagnostics()
+Profiler::~Profiler()
 {
     INFO("")
     handler.disconnect(this);
 }
 
-void Diagnostics::start(string name)
+void Profiler::start(string name)
 {
     INFO("")
     funcName = name;
@@ -61,7 +61,7 @@ void Diagnostics::start(string name)
     startTime = high_resolution_clock::now();
 }
 
-string Diagnostics::stop()
+string Profiler::stop()
 {
     INFO("")
     // Stop recording. MUST BE FIRST COMMAND IN FUNCTION!!!
@@ -84,13 +84,13 @@ string Diagnostics::stop()
     return tstamp.toString();
 }
 
-unsigned int Diagnostics::size()
+unsigned int Profiler::size()
 {
     INFO("Buffer Size: " << buffer.size())
     return buffer.size();
 }
 
-string Diagnostics::pop()
+string Profiler::pop()
 {
     string ret = buffer.front().toCsv();
     buffer.pop();
@@ -98,41 +98,41 @@ string Diagnostics::pop()
     return ret;
 }
 
-void Diagnostics::clear() 
+void Profiler::clear() 
 {
     INFO("")
     while(buffer.size() > 0) buffer.pop();
 }
 
-void Diagnostics::setFile(std::string filename)
+void Profiler::setFile(std::string filename)
 {
     INFO("")
     handler.setFile(filename);
 }
 
-std::string Diagnostics::fileName()
+std::string Profiler::fileName()
 {
     return handler.fileName();
 }
 
-void Diagnostics::save()
+void Profiler::save()
 {
     INFO("")
     handler.save();
 }
 
-void Diagnostics::reg()
+void Profiler::reg()
 {
     handler.connect(this);
 }
 
-DiagnosticsHandler::DiagnosticsHandler(unsigned int bufferLimit)
+ProfilerHandler::ProfilerHandler(unsigned int bufferLimit)
 {
     INFO("")
     limit = bufferLimit;
 }
 
-void DiagnosticsHandler::setFile(string filename)
+void ProfilerHandler::setFile(string filename)
 {
     INFO(filename.c_str())
     if(filename == "") 
@@ -144,24 +144,24 @@ void DiagnosticsHandler::setFile(string filename)
     outfile.close();
 }
 
-std::string DiagnosticsHandler::fileName()
+std::string ProfilerHandler::fileName()
 {
     return logFile;
 }
 
-void DiagnosticsHandler::connect(Diagnostics* member)
+void ProfilerHandler::connect(Profiler* member)
 {
     INFO("Registering new member... (Number of registered members: " << members.size() << ")")
     members.push_back(member);
     INFO("New member registered. (Number of registered members: " << members.size() << ")")
 }
 
-void DiagnosticsHandler::disconnect(Diagnostics* member)
+void ProfilerHandler::disconnect(Profiler* member)
 {
     INFO("")
 }
 
-void DiagnosticsHandler::save()
+void ProfilerHandler::save()
 {
     INFO("Saving...")
     if(logFile == "") return;
@@ -171,11 +171,11 @@ void DiagnosticsHandler::save()
     outfile.open(logFile, std::ios_base::out | std::ios_base::app);
     if(!outfile.is_open())
     {
-        // CRITICAL("Failed to open diagnostics file!")
-        throw std::runtime_error("Failed to open diagnostics file!");
+        // CRITICAL("Failed to open Profiler file!")
+        throw std::runtime_error("Failed to open Profiler file!");
     }
     INFO("Number of member registered: " << members.size())
-    for(Diagnostics* member : members)
+    for(Profiler* member : members)
     {
         while(member->size() > 0)
         {
@@ -185,11 +185,11 @@ void DiagnosticsHandler::save()
     outfile.close();
 }
 
-void DiagnosticsHandler::check()
+void ProfilerHandler::check()
 {
     INFO("")
     unsigned int bufferCount = 0;
-    for(Diagnostics* member : members)
+    for(Profiler* member : members)
     {
         bufferCount += member->size();
     }
