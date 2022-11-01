@@ -41,20 +41,20 @@ ProfilerHandler Profiler::handler((5));
 
 Profiler::Profiler()
 {
-    INFO("")
+    INFO()
     launchTime = high_resolution_clock::now();
     // handler.connect(this);
 }
 
 Profiler::~Profiler()
 {
-    INFO("")
+    INFO()
     handler.disconnect(this);
 }
 
 void Profiler::start(string name)
 {
-    INFO("")
+    INFO()
     funcName = name;
 
     // Start recording. MUST BE LAST COMMAND IN FUNCTION!!!
@@ -63,7 +63,7 @@ void Profiler::start(string name)
 
 string Profiler::stop()
 {
-    INFO("")
+    INFO()
     // Stop recording. MUST BE FIRST COMMAND IN FUNCTION!!!
     stopTime = high_resolution_clock::now();
 
@@ -100,13 +100,13 @@ string Profiler::pop()
 
 void Profiler::clear() 
 {
-    INFO("")
+    INFO()
     while(buffer.size() > 0) buffer.pop();
 }
 
 void Profiler::setFile(std::string filename)
 {
-    INFO("")
+    INFO()
     handler.setFile(filename);
 }
 
@@ -117,7 +117,7 @@ std::string Profiler::fileName()
 
 void Profiler::save()
 {
-    INFO("")
+    INFO()
     handler.save();
 }
 
@@ -128,7 +128,7 @@ void Profiler::reg()
 
 ProfilerHandler::ProfilerHandler(unsigned int bufferLimit)
 {
-    INFO("")
+    INFO()
     limit = bufferLimit;
 }
 
@@ -158,7 +158,7 @@ void ProfilerHandler::connect(Profiler* member)
 
 void ProfilerHandler::disconnect(Profiler* member)
 {
-    INFO("")
+    INFO()
 }
 
 void ProfilerHandler::save()
@@ -187,7 +187,7 @@ void ProfilerHandler::save()
 
 void ProfilerHandler::check()
 {
-    INFO("")
+    INFO()
     unsigned int bufferCount = 0;
     for(Profiler* member : members)
     {
