@@ -18,6 +18,9 @@ int main()
     diag.reg();
     cout << "Output file: " << diag.fileName() << endl;
 
+    cout << "1ms delay x5 ..." << endl;
+    for(int i = 0; i < 5; i++) testDelay(1, "1ms");
+
     cout << "10ms delay x5 ..." << endl;
     for(int i = 0; i < 5; i++) testDelay(10, "10ms");
 
@@ -39,6 +42,9 @@ int main()
     cout << "1000ms delay x5 ..." << endl;
     for(int i = 0; i < 5; i++) testDelay(1000, "1000ms");
 
+    cout << "1ms delay x5 ..." << endl;
+    for(int i = 0; i < 5; i++) testDelay(1, "1ms");
+    
     cout << "10ms delay x5 ..." << endl;
     for(int i = 0; i < 5; i++) testDelay(10, "10ms");
 
