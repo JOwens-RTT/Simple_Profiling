@@ -22,7 +22,7 @@ string Stamp::toString()
 string Stamp::toCsv()
 {
     stringstream ret;
-    ret << functionName << ";" << startTime.() << ";" << timeSpan_ms.count() << ";" << timeSpan_us.count() << ";" << timeSpan_ns.count() << ";";
+    ret << functionName << ";" << startTime.count() << ";" << timeSpan_ms.count() << ";" << timeSpan_us.count() << ";" << timeSpan_ns.count() << ";";
     return ret.str();
 }
 
