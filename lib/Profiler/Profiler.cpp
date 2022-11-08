@@ -2,6 +2,7 @@
 #include <fstream>
 #include <stdio.h>
 #include <logging.h>
+#include <sstream>
 // Q_LOGGING_CATEGORY(ProfilerCategory, "[Profiler]")
 // #define CATEGORY ProfilerCategory
 // #include "../inc/logging.h"
@@ -12,29 +13,17 @@ using namespace std::chrono;
 
 string Stamp::toString()
 {
-    // char format[] = "Name: %s, Start: %d, Duration: %d";
-    // int size = sprintf(nullptr, format, functionName.c_str(), startTime, timeSpan) + 1;
-    // if(size <= 0) throw std::runtime_error("Error during formatting.");
-    // auto sze = static_cast<size_t>(size);
-    // std::unique_ptr<char[]> buf(new char[sze]);
-    // sprintf(buf.get(), format, functionName.c_str(), startTime, timeSpan);
-    // return std::string(buf.get(), buf.get() + sze - 1);
-    return "";
+    stringstream ret; 
+    ret << "Name: " << functionName << ", Start (ms): " << startTime.count() << ", Duration (ms): " << timeSpan_ms.count()
+        << ", Duration (us): " << timeSpan_us.count() << ", Duration (ns): " << timeSpan_ns.count();
+    return ret.str();
 }
 
 string Stamp::toCsv()
 {
-    const char* format = "%s;%dms;%dms;%dus;%dns";
-    unsigned int nameSize = functionName.size();
-    unsigned int startSize = ceil(log10(startTime.count()) + 1);
-    unsigned int spanSize = ceil(log10(timeSpan_ms.count()) + 1) + ceil(log10(timeSpan_us.count()) + 1) + ceil(log10(timeSpan_ns.count()) + 1);
-    unsigned int length = nameSize + startSize + spanSize + 100;
-    char* buff = new char[length];
-    sprintf(buff, format, functionName.c_str(), startTime.count(), timeSpan_ms.count(), timeSpan_us.count(), timeSpan_ns.count());
-    string ret(buff);
-    delete[] buff;
-    return ret;
-    // return "";
+    stringstream ret;
+    ret << functionName << ";" << startTime.() << ";" << timeSpan_ms.count() << ";" << timeSpan_us.count() << ";" << timeSpan_ns.count() << ";";
+    return ret.str();
 }
 
 ProfilerHandler Profiler::handler((5));
