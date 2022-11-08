@@ -30,20 +30,20 @@ ProfilerHandler Profiler::handler((5));
 
 Profiler::Profiler()
 {
-    INFO()
+    // INFO()
     launchTime = high_resolution_clock::now();
     // handler.connect(this);
 }
 
 Profiler::~Profiler()
 {
-    INFO()
+    // INFO()
     handler.disconnect(this);
 }
 
 void Profiler::start(string name)
 {
-    INFO()
+    // INFO()
     funcName = name;
 
     // Start recording. MUST BE LAST COMMAND IN FUNCTION!!!
@@ -52,7 +52,7 @@ void Profiler::start(string name)
 
 string Profiler::stop()
 {
-    INFO()
+    // INFO()
     // Stop recording. MUST BE FIRST COMMAND IN FUNCTION!!!
     stopTime = high_resolution_clock::now();
 
@@ -75,7 +75,7 @@ string Profiler::stop()
 
 unsigned int Profiler::size()
 {
-    INFO("Buffer Size: " << buffer.size())
+    // INFO("Buffer Size: " << buffer.size())
     return buffer.size();
 }
 
@@ -83,19 +83,19 @@ string Profiler::pop()
 {
     string ret = buffer.front().toCsv();
     buffer.pop();
-    INFO(ret)
+    // INFO(ret)
     return ret;
 }
 
 void Profiler::clear() 
 {
-    INFO()
+    // INFO()
     while(buffer.size() > 0) buffer.pop();
 }
 
 void Profiler::setFile(std::string filename)
 {
-    INFO()
+    // INFO()
     handler.setFile(filename);
 }
 
@@ -106,7 +106,7 @@ std::string Profiler::fileName()
 
 void Profiler::save()
 {
-    INFO()
+    // INFO()
     handler.save();
 }
 
@@ -117,13 +117,13 @@ void Profiler::reg()
 
 ProfilerHandler::ProfilerHandler(unsigned int bufferLimit)
 {
-    INFO()
+    // INFO()
     limit = bufferLimit;
 }
 
 void ProfilerHandler::setFile(string filename)
 {
-    INFO(filename.c_str())
+    // INFO(filename.c_str())
     if(filename == "") 
         throw std::runtime_error("Filename is empty!");
     logFile = filename;
@@ -140,19 +140,19 @@ std::string ProfilerHandler::fileName()
 
 void ProfilerHandler::connect(Profiler* member)
 {
-    INFO("Registering new member... (Number of registered members: " << members.size() << ")")
+    // INFO("Registering new member... (Number of registered members: " << members.size() << ")")
     members.push_back(member);
-    INFO("New member registered. (Number of registered members: " << members.size() << ")")
+    // INFO("New member registered. (Number of registered members: " << members.size() << ")")
 }
 
 void ProfilerHandler::disconnect(Profiler* member)
 {
-    INFO()
+    // INFO()
 }
 
 void ProfilerHandler::save()
 {
-    INFO("Saving...")
+    // INFO("Saving...")
     if(logFile == "") return;
 
     ofstream outfile;
@@ -163,7 +163,7 @@ void ProfilerHandler::save()
         // CRITICAL("Failed to open Profiler file!")
         throw std::runtime_error("Failed to open Profiler file!");
     }
-    INFO("Number of member registered: " << members.size())
+    // INFO("Number of member registered: " << members.size())
     for(Profiler* member : members)
     {
         while(member->size() > 0)
@@ -176,7 +176,7 @@ void ProfilerHandler::save()
 
 void ProfilerHandler::check()
 {
-    INFO()
+    // INFO()
     unsigned int bufferCount = 0;
     for(Profiler* member : members)
     {
