@@ -11,6 +11,11 @@ using namespace RTT;
 using namespace std;
 using namespace std::chrono;
 
+Stamp::Stamp(string csv)
+{
+    
+}
+
 string Stamp::toString()
 {
     stringstream ret; 

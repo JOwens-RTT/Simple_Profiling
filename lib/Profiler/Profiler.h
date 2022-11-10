@@ -25,6 +25,8 @@ struct Stamp
     std::chrono::microseconds timeSpan_us;
     std::chrono::nanoseconds timeSpan_ns;
 
+    Stamp(std::string csv);
+
     std::string toString();
 
     std::string toCsv();
